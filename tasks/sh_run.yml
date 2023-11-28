@@ -1,0 +1,37 @@
+---
+- name: test router
+  hosts: R1
+  gather_facts: no
+
+  vars:
+    command_name: show run
+
+  tasks:
+    - name: sh run
+      ios_command:
+        commands:
+          - "{{ command_name }}"
+      register: show_run
+
+    - name: sh run output  
+      local_action: shell /bin/echo "{{ show_run.stdout }}" > ../logs/sh_run_test1.txt
+    
+    - name: set ip address
+      ios_config:
+        lines:
+          - ip address 192.178.0.1 255.255.255.0
+        parents:
+          - interface GigabitEthernet0/1
+    
+    - name: no shutdown
+      cisco.ios.ios_interfaces:
+        config:
+          - name: GigabitEthernet0/1
+            enabled: yes
+        state: merged
+
+#    - name: sh ver
+#      command: do show version
+
+#  handlers:
+#    - name: sh run output

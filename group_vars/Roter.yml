@@ -1,0 +1,18 @@
+---
+ansible_network_os: ios
+ansible_connection: network_cli
+ansible_user: cisco
+ansible_password: cisco
+ansible_become: yes
+ansible_become_method: enable
+ansible_become_pass: cisco
+
+#ansible_network_os: ios
+#ansible_connection: network_cli
+#nsible_user: cisco            #cisco routerのsshログインID
+#ansible_password: cisco        #cisco routerのsshログインパスワード
+#ansible_become: yes
+#ansible_become_method: enable
+#ansible_become_method: enable
+#ansible_become_pass: XXXXX     #cisco routerのenableパスワード
+
