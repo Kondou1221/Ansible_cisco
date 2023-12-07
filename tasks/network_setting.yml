@@ -1,0 +1,59 @@
+---
+
+# - name: network setting
+#   hosts: Network
+#   gather_facts: yes
+
+#   tasks:
+#     - name: ios facts
+#       cisco.ios.ios_facts:
+#         gather_subset: all
+#         gather_network_resources: interfaces
+#       register: result
+
+#     - name: ios facts debug
+#       debug:
+#         msg: "{{result}}"
+
+- name: R1 setting
+  hosts: R1
+  gather_facts: no
+
+  tasks:
+    - name: R1 int ip address
+      cisco.ios.ios_l3_interfaces:
+        config:
+          - name: GigabitEthernet0/0
+            ipv4:
+              - address: 192.168.1.1/24
+        state: merged
+
+    - name: GigabitEthernet0/0 no shutdown
+      cisco.ios.ios_interfaces:
+        config:
+          - name: GigabitEthernet0/0
+            enabled: yes
+        state: merged
+
+    - name: ios facts
+      cisco.ios.ios_facts:
+        gather_subset: all
+        gather_network_resources: interfaces
+      register: result
+
+    - name: ios facts debug
+      debug:
+        msg: "{{result}}"
+
+#   handlers:
+#     - name:
+
+# - name: switch1 setting
+# hosts: switch1
+# gather_facts: yes
+
+# tasks:
+#   - name: 
+
+# handlers:
+#   - name:
