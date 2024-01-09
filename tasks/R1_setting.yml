@@ -1,0 +1,14 @@
+---
+
+- name: R1 setting
+  hosts: R1
+  gather_facts: no
+
+  vars:
+    subinterface1: #例 GigabitEthernet0/1.10
+
+  tasks:
+    - name: subinterface
+      cisco.ios.ios_l3_interfaces:
+        config:
+          - name: "{{ subinterface1 }}"

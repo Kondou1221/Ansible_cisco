@@ -1,0 +1,9 @@
+---
+
+- name: R1 setting
+  hosts: R1
+  gather_facts: no
+
+  tasks:
+
+    - name: 

@@ -1,0 +1,56 @@
+---
+
+- name: S2 setting
+  hosts: S2
+  gather_facts: no
+
+  vars: #インターフェイス名
+    vlan30_int:  #例 FastEthernet0/1
+    vlan40_int:
+    trank_vlan_int:
+
+  tasks:
+    - name: setting vlan10
+      cisco.ios.ios_vlans:
+        config:
+          - name: Vlan_10
+            vlan_id: 30
+            state: active
+            shutdown: disabled
+        state: merged
+
+    - name: setting vlan20
+      cisco.ios.ios_vlans:
+        config:
+          - name: Vlan_20
+            vlan_id: 40
+            state: active
+            shutdown: disabled
+        state: merged
+
+    - name: S1 vlan setteing
+      cisco.ios.ios_l2_interfaces:
+        config:
+          - name: "{{ vlan30_int }}"
+            mode: access
+            access:
+              vlan: 30
+          - name: "{{ vlan40_int }}"
+            mode: access
+            access:
+              vlan: 40
+          - name: "{{ trank_vlan_int }}"
+            mode: trunk
+            trunk:
+              native_vlan: 1
+        state: merged
+
+    - name: ios facts
+        cisco.ios.ios_facts:
+          gather_subset: all
+          gather_network_resources: interfaces
+        register: result
+
+    - name: ios facts debug
+      debug:
+        msg: "{{result}}"
