@@ -5,7 +5,8 @@
   gather_facts: no
 
   vars: #インターフェイス名
-    vlan10_int: FastEthernet0/1 #例 FastEthernet0/1
+    vlan10_int1: FastEthernet0/1 #例 FastEthernet0/1
+    vlan10_int2: FastEthernet0/2
     trank1_vlan_int: FastEthernet0/23
     trank2_vlan_int: FastEthernet0/24
 
@@ -19,11 +20,15 @@
             state: active
             shutdown: disabled
         state: merged
-
+        
     - name: S1 vlan setteing
       cisco.ios.ios_l2_interfaces:
         config:
-          - name: "{{ vlan10_int }}"
+          - name: "{{ vlan10_int1 }}"
+            mode: access
+            access:
+              vlan: 10
+          - name: "{{ vlan10_int2 }}"
             mode: access
             access:
               vlan: 10
@@ -31,18 +36,18 @@
             mode: trunk
             trunk:
               native_vlan: 1
-          - name: "{{ tran2_vlan_int }}"
+          - name: "{{ trank2_vlan_int }}"
             mode: trunk
             trunk:
               native_vlan: 1
         state: merged
-
+        
     - name: ios facts
-        cisco.ios.ios_facts:
-          gather_subset: all
-          gather_network_resources: interfaces
-        register: result
-
+      cisco.ios.ios_facts:
+        gather_subset: all
+        gather_network_resources: interfaces
+      register: result
+      
     - name: ios facts debug
       debug:
         msg: "{{result}}"
