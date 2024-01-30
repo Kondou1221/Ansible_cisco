@@ -1,6 +1,6 @@
 ---
 
-- name: S1 setting
+- name: S1の設定
   hosts: S1
   gather_facts: no
 
@@ -12,16 +12,16 @@
 
 
   tasks:
-    - name: setting vlan10
+    - name: vlan10の作成
       cisco.ios.ios_vlans:
         config:
-          - name: Vlan_10
+          - name: Vlan10
             vlan_id: 10
             state: active
             shutdown: disabled
         state: merged
         
-    - name: S1 vlan setteing
+    - name: S1のvlan設定
       cisco.ios.ios_l2_interfaces:
         config:
           - name: "{{ vlan10_int1 }}"
@@ -42,12 +42,12 @@
               native_vlan: 1
         state: merged
         
-    - name: ios facts
+    - name: S1の情報取得
       cisco.ios.ios_facts:
         gather_subset: all
         gather_network_resources: interfaces
       register: result
       
-    - name: ios facts debug
+    - name: 取得した情報の表示
       debug:
         msg: "{{result}}"

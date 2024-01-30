@@ -1,6 +1,6 @@
 ---
 
-- name: S2 setting
+- name: S2の設定
   hosts: S2
   gather_facts: no
 
@@ -11,25 +11,25 @@
     trank2_vlan_int: FastEthernet0/24
 
   tasks:
-    - name: setting vlan20
+    - name: vlan20の作成
       cisco.ios.ios_vlans:
         config:
-          - name: Vlan_20
+          - name: Vlan20
             vlan_id: 20
             state: active
             shutdown: disabled
         state: merged
 
-    - name: setting vlan30
+    - name: vlan30の作成
       cisco.ios.ios_vlans:
         config:
-          - name: Vlan_30
+          - name: Vlan30
             vlan_id: 30
             state: active
             shutdown: disabled
         state: merged
 
-    - name: S2 vlan setteing
+    - name: S2のvlan設定
       cisco.ios.ios_l2_interfaces:
         config:
           - name: "{{ vlan20_int }}"
@@ -50,12 +50,12 @@
               native_vlan: 1
         state: merged
 
-    - name: ios facts
+    - name: S2の情報取得
       cisco.ios.ios_facts:
         gather_subset: all
         gather_network_resources: interfaces
       register: result
 
-    - name: ios facts debug
+    - name: 取得した情報の表示
       debug:
         msg: "{{result}}"

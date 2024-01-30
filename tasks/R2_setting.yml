@@ -1,35 +1,48 @@
 ---
 
-- name: R2 setting
+- name: R2の設定
   hosts: R2
   gather_facts: no
 
   tasks:
-    - name: vlan10 setting
+
+    - name: vlan1の作成と設定
+      cisco.ios.ios_config:
+        lines:
+          - ip address 192.168.1.2 255.255.255.0
+          - standby 1 ip 192.168.1.250
+          - standby 1 priority 100
+          - standby 1 preempt
+        parents: interface vlan 1
+
+    - name: vlan10の設定
       cisco.ios.ios_config:
         lines:
           - ip address 192.168.10.2 255.255.255.0
-          - glbp 10 ip 192.168.10.254
-          - glbp 10 preempt
-        parents: interface vlan10
+          - standby 10 ip 192.168.10.254
+          - standby 10 priority 100
+          - standby 10 preempt
+        parents: interface vlan 10
 
-    - name: vlan20 setting
+    - name: vlan20の設定
       cisco.ios.ios_config:
         lines:
           - ip address 192.168.20.2 255.255.255.0
-          - glbp 20 ip 192.168.20.254
-          - glbp 20 preempt
-        parents: interface vlan20
+          - standby 20 ip 192.168.20.254
+          - standby 20 priority 100
+          - standby 20 preempt
+        parents: interface vlan 20
     
-    - name: vlan30 setting
+    - name: vlan30設定
       cisco.ios.ios_config:
         lines:
           - ip address 192.168.30.2 255.255.255.0
-          - glbp 30 ip 192.168.30.254
-          - glbp 30 preempt
-        parents: interface vlan30
+          - standby 30 ip 192.168.30.254
+          - standby 30 priority 100
+          - standby 30 preempt
+        parents: interface vlan 30
 
-    - name: R2 setting
+    - name: R2のトランクポート設定
       cisco.ios.ios_config:
         lines:
           - interface range fa1/0/23-24
